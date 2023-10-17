@@ -57,14 +57,11 @@ class UserController extends Controller
     {
         $student = DB::table('newproject.students')
         ->join('eduhub.tblprogramme', 'newproject.students.program', '=', 'eduhub.tblprogramme.id')
-        ->join('eduhub.sessions AS a', 'newproject.students.intake', '=', 'a.SessionID')
-        ->join('eduhub.sessions AS b', 'newproject.students.session', '=', 'b.SessionID')
         ->join('eduhub.tblstudent_status', 'newproject.students.status', '=', 'eduhub.tblstudent_status.id')
         ->join('newproject.tblstudent_personal', 'newproject.students.ic', '=', 'newproject.tblstudent_personal.student_ic')
         ->join('eduhub.tblsex', 'newproject.tblstudent_personal.sex_id', '=', 'eduhub.tblsex.id')
         ->join('newproject.users', 'newproject.students.stafID_add', '=', 'newproject.users.id')
-        ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 'a.SessionName AS intake', 
-                 'b.SessionName AS session', 'eduhub.tblstudent_status.name AS status',
+        ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 'eduhub.tblstudent_status.name AS status',
                  'newproject.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender');
     
 
@@ -73,49 +70,12 @@ class UserController extends Controller
             $student->where('newproject.students.program', $request->program);
         }
         
-        if(!empty($request->session))
+        if(!empty($request->from) && !empty($request->to))
         {
-            $student->where('newproject.students.session', $request->session);
-        }
-        
-        if(!empty($request->year))
-        {
-            $student->where('a.Year', $request->year);
-        }
-        
-        if(!empty($request->semester))
-        {
-            $student->where('newproject.students.semester', $request->semester);
-        }
-        
-        if(!empty($request->status))
-        {
-            $student->where('newproject.students.status', $request->status);
+            $student->whereBetween('newproject.students.date_add', [$request->from, $request->to]);
         }
 
         $students = $student->where('newproject.users.type', Auth::user()->type)->get();
-
-        foreach($students as $key => $std)
-        {
-
-            if($std->student_status == 1)
-            {
-
-                $student_status[$key] = 'Holding';
-
-            }elseif($std->student_status == 2)
-            {
-
-                $student_status[$key] = 'Kuliah';
-
-            }elseif($std->student_status == 4)
-            {
-
-                $student_status[$key] = 'Latihan Industri';
-
-            }
-
-        }
 
         $content = "";
         $content .= '<thead>
@@ -139,22 +99,10 @@ class UserController extends Controller
                                 Program
                             </th>
                             <th>
-                                Intake
-                            </th>
-                            <th>
-                                Current Session
-                            </th>
-                            <th>
-                                Semester
-                            </th>
-                            <th>
                                 Status
                             </th>
                             <th>
                                 No. Phone
-                            </th>
-                            <th>
-                                Campus
                             </th>
                             <th>
                             </th>
@@ -185,22 +133,10 @@ class UserController extends Controller
                 '. $student->progname .'
                 </td>
                 <td>
-                '. $student->intake .'
-                </td>
-                <td>
-                '. $student->session .'
-                </td>
-                <td>
-                '. $student->semester .'
-                </td>
-                <td>
                 '. $student->status .'
                 </td>
                 <td>
                 '. $student->no_tel .'
-                </td>
-                <td>
-                '. $student_status[$key] .'
                 </td>';
                 
 
@@ -252,68 +188,17 @@ class UserController extends Controller
     {
         $students = DB::table('newproject.students')
             ->join('eduhub.tblprogramme', 'newproject.students.program', 'eduhub.tblprogramme.id')
-            ->join('eduhub.sessions AS a', 'newproject.students.intake', 'a.SessionID')
-            ->join('eduhub.sessions AS b', 'newproject.students.session', 'b.SessionID')
             ->join('eduhub.tblstudent_status', 'newproject.students.status', 'eduhub.tblstudent_status.id')
             ->join('newproject.tblstudent_personal', 'newproject.students.ic', 'newproject.tblstudent_personal.student_ic')
             ->join('eduhub.tblsex', 'newproject.tblstudent_personal.sex_id', 'eduhub.tblsex.id')
             ->join('newproject.users', 'newproject.students.stafID_add', '=', 'newproject.users.id')
-            ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 'a.SessionName AS intake', 
-                     'b.SessionName AS session', 'eduhub.tblstudent_status.name AS status',
+            ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 
+                     'eduhub.tblstudent_status.name AS status',
                      'newproject.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender')
             ->where('newproject.students.name', 'LIKE', "%".$request->search."%")
             ->orwhere('newproject.students.ic', 'LIKE', "%".$request->search."%")
             ->orwhere('newproject.students.no_matric', 'LIKE', "%".$request->search."%")
             ->where('newproject.users.type', Auth::user()->type)->get();
-
-        // if(!empty($request->program))
-        // {
-        //     $student->where('students.program', $request->program);
-        // }
-        
-        // if(!empty($request->session))
-        // {
-        //     $student->where('students.session', $request->session);
-        // }
-        
-        // if(!empty($request->year))
-        // {
-        //     $student->where('a.Year', $request->year);
-        // }
-        
-        // if(!empty($request->semester))
-        // {
-        //     $student->where('students.semester', $request->semester);
-        // }
-        
-        // if(!empty($request->status))
-        // {
-        //     $student->where('students.status', $request->status);
-        // }
-
-        // $students = $student->get();
-
-        foreach($students as $key => $std)
-        {
-
-            if($std->student_status == 1)
-            {
-
-                $student_status[$key] = 'Holding';
-
-            }elseif($std->student_status == 2)
-            {
-
-                $student_status[$key] = 'Kuliah';
-
-            }elseif($std->student_status == 4)
-            {
-
-                $student_status[$key] = 'Latihan Industri';
-
-            }
-
-        }
 
         $content = "";
         $content .= '<thead>
@@ -332,15 +217,6 @@ class UserController extends Controller
                             </th>
                             <th>
                                 Program
-                            </th>
-                            <th>
-                                Intake
-                            </th>
-                            <th>
-                                Current Session
-                            </th>
-                            <th>
-                                Semester
                             </th>
                             <th>
                             </th>
@@ -366,15 +242,6 @@ class UserController extends Controller
                 </td>
                 <td>
                 '. $student->progname .'
-                </td>
-                <td>
-                '. $student->intake .'
-                </td>
-                <td>
-                '. $student->session .'
-                </td>
-                <td>
-                '. $student->semester .'
                 </td>';
                 
 
@@ -438,15 +305,9 @@ class UserController extends Controller
 
         $data['mstatus'] = DB::connection('second_db')->table('tblmarriage')->get();
 
-        $data['EA'] = DB::connection('second_db')->table('tbledu_advisor')->get();
-
         $data['pass'] = DB::connection('second_db')->table('tblpass_type')->get();
 
         $data['country'] = DB::connection('second_db')->table('tblcountry')->get();
-        
-        $data['dun'] = DB::connection('second_db')->table('tbldun')->orderBy('name')->get();
-
-        $data['parlimen'] = DB::connection('second_db')->table('tblparlimen')->orderBy('name')->get();
 
         $data['qualification'] = DB::connection('second_db')->table('tblqualification_std')->get();
 
@@ -505,8 +366,6 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => ['required','string'],
-            'session' => ['required'],
-            'batch' => ['required'],
             'program' => ['required'],
         ]);
 
@@ -536,9 +395,6 @@ class UserController extends Controller
                 'ic' => $data['id'],
                 'no_matric' => null,
                 'email' =>$request->email,
-                'intake' => $data['session'],
-                'batch' => $data['batch'],
-                'session' => $data['session'],
                 'semester' => 1,
                 'program' => $data['program'],
                 'password' => Hash::make('12345678'),
@@ -552,24 +408,9 @@ class UserController extends Controller
                 'date_mod' => date('Y-m-d')
             ]);
 
-            DB::table('tblstudent_log')->insert([
-                'student_ic' => $data['id'],
-                'session_id' => $data['session'],
-                'semester_id' => 1,
-                'status_id' => 1,
-                'kuliah_id' => 0,
-                'date' => date("Y-m-d H:i:s"),
-                'remark' => null,
-                'add_staffID' => Auth::user()->id
-            ]);
-
             DB::table('tblstudent_personal')->insert([
                 'student_ic' => $data['id'],
                 'date_birth' => $request->birth_date,
-                'advisor_id' => $request->EA,
-                'bank_name' => $request->bank_name,
-                'bank_no' => $request->bank_number,
-                'ptptn_no' => $request->PN,
                 'datetime' => $request->dt,
                 'religion_id' => $request->religion,
                 'nationality_id' => $request->race,
@@ -581,19 +422,10 @@ class UserController extends Controller
                 'no_tel' => $request->np1,
                 'no_tel2' => $request->np2,
                 'no_telhome' => $request->np3,
-                'dun' => $request->dun,
-                'parlimen' => $request->parlimen,
                 'qualification' => $request->qualification,
+                'description' => $request->comment,
                 'oku' => $request->oku,
                 'no_jkm' => $request->jkm
-            ]);
-
-            DB::table('tblstudent_pass')->insert([
-                'student_ic' => $data['id'],
-                'pass_type' => $request->pt,
-                'pass_no' => $request->spn,
-                'date_issued' => $request->di,
-                'date_expired' => $request->de
             ]);
 
             DB::table('tblstudent_address')->insert([
@@ -606,60 +438,6 @@ class UserController extends Controller
                 'state_id' => $request->state,
                 'country_id' => $request->country
             ]);
-
-            // $numWaris = count($request->input('w_name'));
-            // for ($i = 0; $i < $numWaris; $i++) {
-
-            //     if($request->input('w_name')[$i] != '')
-            //     {
-            //         DB::table('tblstudent_waris')->insert([
-            //             'student_ic' => $data['id'],
-            //             'name' => $request->input('w_name')[$i],
-            //             'ic' => $request->input('w_ic')[$i],
-            //             'home_tel' => $request->input('w_notel_home')[$i],
-            //             'phone_tel' => $request->input('w_notel')[$i],
-            //             'occupation' => $request->input('occupation')[$i],
-            //             'dependent_no' => $request->input('dependent')[$i],
-            //             'kasar' => $request->input('w_kasar')[$i],
-            //             'bersih' => $request->input('w_bersih')[$i],
-            //             'relationship' => $request->input('relationship')[$i],
-            //             'race' => $request->input('w_race')[$i],
-            //             'status' => $request->input('w_status')[$i]
-            //         ]);
-            //     }
-            // }
-
-            DB::table('student_form')->insert([
-                'student_ic' => $data['id'],
-                'main' => $request->main,
-                'pre_registration' => $request->PR,
-                // 'c19' => $request->c19,
-                'complete_form' => $request->CF,
-                'copy_ic' => $request->copyic,
-                'copy_birth' => $request->copybc,
-                'copy_spm' => $request->copyspm,
-                'copy_school' => $request->coppysc,
-                'copy_pic' => $request->copypic,
-                'copy_pincome' => $request->copypp
-            ]);
-
-            /*$subject = DB::table('subjek')->where([
-                ['prgid','=', $data['program']],
-                ['semesterid','=', 1],
-            ])->get();
-
-            foreach($subject as $key)
-            {
-                student::create([
-                    'student_ic' => $data['id'],
-                    'courseid' => $key->sub_id,
-                    'sessionid' => $data['session'],
-                    'semesterid' => 1,
-                    'status' => 'ACTIVE'
-                ]);
-            }*/
-
-            //$this->suratTawaran($data['id']);
 
         }
 
@@ -704,15 +482,9 @@ class UserController extends Controller
 
         $data['mstatus'] = DB::connection('second_db')->table('tblmarriage')->get();
 
-        $data['EA'] = DB::connection('second_db')->table('tbledu_advisor')->get();
-
         $data['pass'] = DB::connection('second_db')->table('tblpass_type')->get();
 
         $data['country'] = DB::connection('second_db')->table('tblcountry')->get();
-        
-        $data['dun'] = DB::connection('second_db')->table('tbldun')->orderBy('name')->get();
-
-        $data['parlimen'] = DB::connection('second_db')->table('tblparlimen')->orderBy('name')->get();
 
         $data['qualification'] = DB::connection('second_db')->table('tblqualification_std')->get();
 
@@ -727,8 +499,6 @@ class UserController extends Controller
 
         $data = $request->validate([
             'name' => ['required','string'],
-            'session' => ['required'],
-            'batch' => ['required'],
             'program' => ['required'],
         ]);
 
@@ -752,10 +522,7 @@ class UserController extends Controller
             DB::table('student_program')->insert([
                 'student_ic' => $oldstd->ic,
                 'program_id' => $oldstd->program,
-                'comment' => $request->comment,
-                'intake' => $oldstd->intake,
-                'batch' => $oldstd->batch,
-                'session' => $oldstd->session
+                'comment' => $request->comment
             ]);
 
             DB::table('students')->where('ic', $data['id'])->update([
@@ -767,19 +534,12 @@ class UserController extends Controller
         DB::table('students')->where('ic', $data['id'])->update([
             'name' => $data['name'],
             'email' =>$request->email,
-            'intake' => $data['session'],
-            'batch' => $data['batch'],
-            'program' => $data['program'],
-            'date_offer' => $request->dol
+            'program' => $data['program']
         ]);
 
         DB::table('tblstudent_personal')->where('student_ic', $data['id'])->update([
             'student_ic' => $data['id'],
             'date_birth' => $request->birth_date,
-            'advisor_id' => $request->EA,
-            'bank_name' => $request->bank_name,
-            'bank_no' => $request->bank_number,
-            'ptptn_no' => $request->PN,
             'datetime' => $request->dt,
             'religion_id' => $request->religion,
             'nationality_id' => $request->race,
@@ -791,23 +551,10 @@ class UserController extends Controller
             'no_tel' => $request->np1,
             'no_tel2' => $request->np2,
             'no_telhome' => $request->np3,
-            'dun' => $request->dun,
-            'parlimen' => $request->parlimen,
             'qualification' => $request->qualification,
             'oku' => $request->oku,
             'no_jkm' => $request->jkm
         ]);
-
-        DB::table('tblstudent_pass')->updateOrInsert(
-            ['student_ic' => $data['id']], // "where" condition
-            [
-                'student_ic' => $data['id'],
-                'pass_type' => $request->pt,
-                'pass_no' => $request->spn,
-                'date_issued' => $request->di,
-                'date_expired' => $request->de
-            ]
-        );
 
         DB::table('tblstudent_address')->updateOrInsert(
             ['student_ic' => $data['id']],
@@ -846,23 +593,6 @@ class UserController extends Controller
                 ]);
             }
         }
-
-        DB::table('student_form')->updateOrInsert(
-            ['student_ic' => $data['id']],
-            [
-            'student_ic' => $data['id'],
-            'main' => $request->main,
-            'pre_registration' => $request->PR,
-            // 'c19' => $request->c19,
-            'complete_form' => $request->CF,
-            'copy_ic' => $request->copyic,
-            'copy_birth' => $request->copybc,
-            'copy_spm' => $request->copyspm,
-            'copy_school' => $request->coppysc,
-            'copy_pic' => $request->copypic,
-            'copy_pincome' => $request->copypp
-            ]
-        );
 
         return back();
 
