@@ -55,27 +55,27 @@ class UserController extends Controller
 
     public function getStudentTableIndex(Request $request)
     {
-        $student = DB::table('newproject.students')
-        ->join('eduhub.tblprogramme', 'newproject.students.program', '=', 'eduhub.tblprogramme.id')
-        ->join('eduhub.tblstudent_status', 'newproject.students.status', '=', 'eduhub.tblstudent_status.id')
-        ->join('newproject.tblstudent_personal', 'newproject.students.ic', '=', 'newproject.tblstudent_personal.student_ic')
-        ->join('eduhub.tblsex', 'newproject.tblstudent_personal.sex_id', '=', 'eduhub.tblsex.id')
-        ->join('newproject.users', 'newproject.students.stafID_add', '=', 'newproject.users.id')
-        ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 'eduhub.tblstudent_status.name AS status',
-                 'newproject.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender');
+        $student = DB::table('unitilink.students')
+        ->join('eduhub.tblprogramme', 'unitilink.students.program', '=', 'eduhub.tblprogramme.id')
+        ->join('eduhub.tblstudent_status', 'unitilink.students.status', '=', 'eduhub.tblstudent_status.id')
+        ->join('unitilink.tblstudent_personal', 'unitilink.students.ic', '=', 'unitilink.tblstudent_personal.student_ic')
+        ->join('eduhub.tblsex', 'unitilink.tblstudent_personal.sex_id', '=', 'eduhub.tblsex.id')
+        ->join('unitilink.users', 'unitilink.students.stafID_add', '=', 'unitilink.users.id')
+        ->select('unitilink.students.*', 'eduhub.tblprogramme.progname', 'eduhub.tblstudent_status.name AS status',
+                 'unitilink.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender');
     
 
         if(!empty($request->program))
         {
-            $student->where('newproject.students.program', $request->program);
+            $student->where('unitilink.students.program', $request->program);
         }
         
         if(!empty($request->from) && !empty($request->to))
         {
-            $student->whereBetween('newproject.students.date_add', [$request->from, $request->to]);
+            $student->whereBetween('unitilink.students.date_add', [$request->from, $request->to]);
         }
 
-        $students = $student->where('newproject.users.type', Auth::user()->type)->get();
+        $students = $student->where('unitilink.users.type', Auth::user()->type)->get();
 
         $content = "";
         $content .= '<thead>
@@ -186,19 +186,19 @@ class UserController extends Controller
 
     public function getStudentTableIndex2(Request $request)
     {
-        $students = DB::table('newproject.students')
-            ->join('eduhub.tblprogramme', 'newproject.students.program', 'eduhub.tblprogramme.id')
-            ->join('eduhub.tblstudent_status', 'newproject.students.status', 'eduhub.tblstudent_status.id')
-            ->join('newproject.tblstudent_personal', 'newproject.students.ic', 'newproject.tblstudent_personal.student_ic')
-            ->join('eduhub.tblsex', 'newproject.tblstudent_personal.sex_id', 'eduhub.tblsex.id')
-            ->join('newproject.users', 'newproject.students.stafID_add', '=', 'newproject.users.id')
-            ->select('newproject.students.*', 'eduhub.tblprogramme.progname', 
+        $students = DB::table('unitilink.students')
+            ->join('eduhub.tblprogramme', 'unitilink.students.program', 'eduhub.tblprogramme.id')
+            ->join('eduhub.tblstudent_status', 'unitilink.students.status', 'eduhub.tblstudent_status.id')
+            ->join('unitilink.tblstudent_personal', 'unitilink.students.ic', 'unitilink.tblstudent_personal.student_ic')
+            ->join('eduhub.tblsex', 'unitilink.tblstudent_personal.sex_id', 'eduhub.tblsex.id')
+            ->join('unitilink.users', 'unitilink.students.stafID_add', '=', 'unitilink.users.id')
+            ->select('unitilink.students.*', 'eduhub.tblprogramme.progname', 
                      'eduhub.tblstudent_status.name AS status',
-                     'newproject.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender')
-            ->where('newproject.students.name', 'LIKE', "%".$request->search."%")
-            ->orwhere('newproject.students.ic', 'LIKE', "%".$request->search."%")
-            ->orwhere('newproject.students.no_matric', 'LIKE', "%".$request->search."%")
-            ->where('newproject.users.type', Auth::user()->type)->get();
+                     'unitilink.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender')
+            ->where('unitilink.students.name', 'LIKE', "%".$request->search."%")
+            ->orwhere('unitilink.students.ic', 'LIKE', "%".$request->search."%")
+            ->orwhere('unitilink.students.no_matric', 'LIKE', "%".$request->search."%")
+            ->where('unitilink.users.type', Auth::user()->type)->get();
 
         $content = "";
         $content .= '<thead>
@@ -601,7 +601,7 @@ class UserController extends Controller
     public function spmIndex()
     {
         
-        $data['student'] = DB::table('newproject.students AS std')
+        $data['student'] = DB::table('unitilink.students AS std')
                            ->join('eduhub.tblstudent_status as stdStatus', 'std.status', 'stdStatus.id')
                            ->join('eduhub.tblprogramme as prog', 'std.program', 'prog.id')
                            ->join('eduhub.sessions AS t1', 'std.intake', 't1.SessionID')
