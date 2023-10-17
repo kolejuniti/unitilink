@@ -272,7 +272,7 @@
 					</a>
 					<ul class="treeview-menu treeview-menu-visible" id="treeview-menu-visible">
 						<li><a href="{{ route('user.index') }}" class="{{ (route('user.index') == Request::url()) ? 'active' : ''}}">Student List</a></li>
-						<li><a href="{{ route('user.editStudent') }}" class="{{ (route('user.editStudent') == Request::url()) ? 'active' : ''}}">Student Edit</a></li>
+						<li><a href="{{ route('user.editStudent') }}" class="{{ (route('user.editStudent') == Request::url()) ? 'active' : ''}}">Student Profile & Academic</a></li>
 						<li><a href="{{ route('user.create') }}" class="{{ (route('user.create') == Request::url()) ? 'active' : ''}}">Create Student</a></li>
 						{{-- <li><a href="" class="">Update Status</a></li> --}}
 					</ul>

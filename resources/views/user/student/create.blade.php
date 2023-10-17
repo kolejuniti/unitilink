@@ -198,28 +198,6 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
-                            <label class="form-label" for="dun">DUN <p style="color:red; display:inline-block;">*</p></label>
-                            <select class="form-select" id="dun" name="dun" required>
-                              <option value="-" selected disabled>-</option>
-                                @foreach ($data['dun'] as $dun)
-                                <option value="{{ $dun->id }}">{{ $dun->name }}</option> 
-                                @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="parlimen">Parlimen <p style="color:red; display:inline-block;">*</p></label>
-                            <select class="form-select" id="parlimen" name="parlimen" required>
-                              <option value="-" selected disabled>-</option>
-                                @foreach ($data['parlimen'] as $parlimen)
-                                <option value="{{ $parlimen->id }}">{{ $parlimen->name }}</option> 
-                                @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
                             <label class="form-label" for="qualification">Qualification <p style="color:red; display:inline-block;">*</p></label>
                             <select class="form-select" id="qualification" name="qualification" required>
                               <option value="-" selected disabled>-</option>
@@ -229,23 +207,18 @@
                             </select>
                           </div>
                         </div>
+                        <div class="col-md-6 mt-3" id="commentID2" hidden>
+                          <div class="form-group">
+                            <label class="form-label" for="comment">Description</label>
+                            <input type="text" class="form-control" id="comment" placeholder="Enter Description" name="comment">
+                          </div>   
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="form-label" for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
-                          </div>
-                        </div> 
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="EA">Education Advisor</label>
-                            <input class="form-select" type="text" id="EA" name="EA" list="EA-list">
-                            <datalist id="EA-list">
-                              @foreach ($data['EA'] as $ea)
-                                <option value="{{ $ea->id }}">{{ $ea->name}}</option> 
-                              @endforeach
-                            </datalist>
                           </div>
                         </div>
                       </div>
@@ -264,92 +237,12 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="bank_name" class="form-label">Choose a bank:</label>
-                            <input class="form-control" list="banks" id="bank_name" name="bank_name" placeholder="Type to search...">
-                            <datalist id="banks">
-                                <option value="AFFIN BANK">
-                                <option value="ALLIANCE BANK">
-                                <option value="AMBANK">
-                                <option value="BANK ISLAM MALAYSIA">
-                                <option value="BANK MUAMALAT MALAYSIA">
-                                <option value="BANK RAKYAT">
-                                <option value="BANK SIMPANAN NASIONAL">
-                                <option value="CIMB BANK">
-                                <option value="CITIBANK">
-                                <option value="HONG LEONG BANK">
-                                <option value="HSBC BANK MALAYSIA">
-                                <option value="MAYBANK">
-                                <option value="OCBC BANK">
-                                <option value="PUBLIC BANK">
-                                <option value="RHB BANK">
-                                <option value="STANDARD CHARTERED BANK MALAYSIA">
-                                <option value="UOB BANK">
-                            </datalist>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="bank_number">Bank Account No.</label>
-                            <input type="text" class="form-control" id="bank_number" placeholder="Enter Bank Number" name="bank_number">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="PN">PTPTN Pin No.</label>
-                            <input type="text" class="form-control" id="PN" placeholder="Enter PTPTN Pin No." name="PN">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
                         <div class="col-md-6 mb-2">
                           <div class="form-group">
                             <label class="form-label" for="dt">Date/Time</label>
-                            <input type="datetime-local" class="form-control" id="dt" placeholder="Enter Bank Name" name="dt">
+                            <input type="datetime-local" class="form-control" id="dt" name="dt">
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card mb-3">
-                    <div class="card-header">
-                      <b>Visa / Student Pass Information</b>
-                    </div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="pt">Pass Type</label>
-                            <select class="form-select" id="pt" name="pt">
-                              <option value="-" selected disabled>-</option>
-                              @foreach ($data['pass'] as $pss)
-                                <option value="{{ $pss->id }}">{{$pss->name }}</option> 
-                              @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="spn">Student Pass No.</label>
-                            <input type="text" class="form-control" id="spn" placeholder="Enter Student Pass No." name="spn">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="di">Date Issued</label>
-                            <input type="date" class="form-control" id="di" name="di">
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="de">Date Expired</label>
-                            <input type="date" class="form-control" id="de" name="de">
-                          </div>
-                        </div> 
                       </div>
                     </div>
                   </div>
@@ -532,7 +425,7 @@
 
                   <div class="card mb-3">
                     <div class="card-header">
-                      <b>Program Registration</b>
+                      <b>Program Registration</b> <a href="{{ asset('storage/requirement/SENARAI PROGRAM DENGAN SYARAT KELAYAKAN SKM _SVM.xls') }}"><h3>Requirement</h3></a>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -547,96 +440,6 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="session">Intake</label>
-                            <select class="form-select" id="session" name="session">
-                              <option value="-" selected disabled>-</option>
-                                @foreach ($session as $ses)
-                                <option value="{{ $ses->SessionID }}">{{ $ses->SessionName}}</option> 
-                                @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="batch">Batch</label>
-                            <select class="form-select" id="batch" name="batch">
-                              <option value="-" selected disabled>-</option>
-                                @foreach ($data['batch'] as $bch)
-                                <option value="{{ $bch->BatchID }}">{{ $bch->BatchName}}</option> 
-                                @endforeach
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label class="form-label" for="dol">Date of Offer Letter</label>
-                            <input type="date" class="form-control" id="dol" name="dol">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <div class="ml-2">
-                              <input type="checkbox" id="main" class="filled-in" name="main" value="1">
-                              <label for="main">Main</label>
-                            </div>
-                            <div class="ml-2">
-                              <input type="checkbox" id="PR" class="filled-in" name="PR" value="1">
-                              <label for="PR">Pre-Registration</label>
-                            </div>
-                            {{-- <div class="ml-2">
-                              <input type="checkbox" id="c19" class="filled-in" name="c19" value="1">
-                              <label for="c19">C19</label>
-                            </div> --}}
-                            <div class="ml-2">
-                              <input type="checkbox" id="CF" class="filled-in" name="CF" value="1">
-                              <label for="CF">Complete Form</label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" id="missingform">
-                        <div class="card mb-3">
-                          <div class="card-header">
-                            <b>Please check the missing/incomplete form below.</b>
-                          </div>
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="copyic" class="filled-in" name="copyic" value="1">
-                                    <label for="copyic">Copy of student's identification card</label>
-                                  </div>
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="copybc" class="filled-in" name="copybc" value="1">
-                                    <label for="copybc">Copy of student's birth certificate.</label>
-                                  </div>
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="copyspm" class="filled-in" name="copyspm" value="1">
-                                    <label for="copyspm">Copy of SPM certificate.</label>
-                                  </div>
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="coppysc" class="filled-in" name="coppysc" value="1">
-                                    <label for="coppysc">Copy of school certificate.</label>
-                                  </div>
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="copypic" class="filled-in" name="copypic" value="1">
-                                    <label for="copypic">Copy of parent's identification card.</label>
-                                  </div>
-                                  <div class="ml-2">
-                                    <input type="checkbox" id="copypp" class="filled-in" name="copypp" value="1">
-                                    <label for="copypp">Copy of parant's payslip/income confirmation.</label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
                       </div>
                     </div>
                   </div>
@@ -821,6 +624,30 @@ function getStudent(search)
         });
     
 }
+
+$(document).on('change', '#qualification', function(){
+
+  let arr = [3,4,5,6];
+
+  // Convert the value to a number for comparison
+  let selectedValue = parseInt($(this).val(), 10);
+
+  if(arr.includes(selectedValue))
+  {
+
+    document.getElementById('commentID2').hidden = false;
+    document.getElementById('comment').required = true;
+    document.getElementById('comment').disabled = false;
+
+  }else{
+
+    document.getElementById('commentID2').hidden = true;
+    document.getElementById('comment').required = false;
+    document.getElementById('comment').disabled = true;
+
+  }
+
+})
 
 </script>
 @endsection

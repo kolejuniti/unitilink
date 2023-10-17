@@ -1,4 +1,4 @@
-@extends((Auth::user()->type == "aitaf") ? 'layouts.user' : ((Auth::user()->type == "admin") ? 'layouts.admin' : ''))
+@extends((Auth::user()->type == "admin") ? 'layouts.admin' : 'layouts.user')
 
 @section('main')
 <!-- Content Header (Page header) -->
