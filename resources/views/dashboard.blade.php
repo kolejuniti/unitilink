@@ -28,8 +28,8 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3 style="text-align:center">Selamat Datang ke</h3><br>
-              <h3 style="text-align:center">Sistem Maklumat pelajar Uniti!</h3>
+              <h4 style="text-align:center">Selamat Datang ke</h4><br>
+              <h3 style="text-align:center">Sistem Maklumat Pelajar Uniti!</h3>
             </div>
             {{-- <div class="icon">
               <i class="ion ion-bag"></i>
