@@ -101,13 +101,13 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
+                      {{-- <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
                             <h4 style="color:red; display:inline-block;"><a target="_blank" href="https://mysprsemak.spr.gov.my/semakan">Untuk semak student di MYSPR, boleh click di sini.</a></h4>
                           </div>
                         </div>
-                      </div>
+                      </div> --}}
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
@@ -563,7 +563,7 @@ $(document).ready(function() {
     let arr = [3,4,5,6];
 
     // Convert the value to a number for comparison
-    let selectedValue = parseInt($('#description').val(), 10);
+    let selectedValue = parseInt($('#qualification').val(), 10);
 
     if(arr.includes(selectedValue))
     {

@@ -136,14 +136,17 @@
 		<!-- Logo -->
 		<a href="{{ url('/user/index') }}" class="logo">
 		  <!-- logo-->
-		  {{-- <div class="logo-mini w-30">
+		  <div class="logo-mini w-30">
 			  <span class="light-logo"><img src="{{ asset('assets/images/logo/Kolej-UNITI.png')}}" alt="logo" class="unity"></span>
 			  <span class="dark-logo"><img src="{{ asset('assets/images/logo-letter-white.png') }}" alt="logo"></span>
 		  </div>
+		  &nbsp;&nbsp;
 		  <div class="logo-lg">
-			  <span class="light-logo"><img src="{{ asset('assets/images/logo_ucms2.png') }}" alt="logo" class="eduhub"></span>
-			  <span class="dark-logo"><img src="{{ asset('assets/images/logo_ucms2.png') }}" alt="logo" class="eduhub"></span>
-		  </div> --}}
+			<h1>
+				<b><span style="color: orange;">UNITI</span> <span style="color: blue;">LINK</span></b>
+				<span class="dark-logo"><img src="{{ asset('assets/images/logo-letter-white.png') }}" alt="logo"></span>
+			</h1>
+		  </div>
 		</a>	
 	</div>     
     <!-- Header Navbar -->
@@ -176,7 +179,7 @@
 		
       <div class="navbar-custom-menu r-side">
         <ul class="nav navbar-nav">
-			<li class="btn-group d-md-inline-flex d-none">
+			{{-- <li class="btn-group d-md-inline-flex d-none">
               <a href="javascript:void(0)" title="skin Change" class="waves-effect skin-toggle waves-light">
 			  	<label class="switch">
 					<input type="checkbox" data-mainsidebarskin="toggle" id="toggle_left_sidebar_skin">
@@ -184,50 +187,7 @@
 					<span class="switch-off" onclick="clickFn('light')"><i data-feather="sun"></i></span>
 				</label>
 			  </a>				
-            </li>
-			<li class="dropdown notifications-menu btn-group">
-				<a href="#" class="waves-effect waves-light btn-primary-light svg-bt-icon bg-transparent" data-bs-toggle="dropdown" title="Notifications">
-					<i data-feather="bell"></i>
-					<div class="pulse-wave"></div>
-			    </a>
-				<ul class="dropdown-menu animated bounceIn">
-				  <li class="header">
-					<div class="p-20">
-						<div class="flexbox">
-							<div>
-								<h4 class="mb-0 mt-0">Notifications</h4>
-							</div>
-							<div>
-								<a href="#" class="text-danger">Clear All</a>
-							</div>
-						</div>
-					</div>
-				  </li>
-				  <li>
-					<!-- inner menu: contains the actual data -->
-					<ul class="menu sm-scrol">
-					  <li>
-						<a href="#">
-						  <i class="fa fa-users text-info"></i> Curabitur id eros quis nunc suscipit blandit.
-						</a>
-					  </li>
-					  <li>
-						<a href="#">
-						  <i class="fa fa-warning text-warning"></i> Duis malesuada justo eu sapien elementum, in semper diam posuere.
-						</a>
-					  </li>
-					  <li>
-						<a href="#">
-						  <i class="fa fa-users text-danger"></i> Donec at nisi sit amet tortor commodo porttitor pretium a erat.
-						</a>
-					  </li>
-					</ul>
-				  </li>
-				  <li class="footer">
-					  <a href="#">View all</a>
-				  </li>
-				</ul>
-			</li>
+            </li> --}}
 			
 			
 			<!-- User Account-->
@@ -348,7 +308,7 @@
               </div> --}}
 			  <div>
 				  <div class="col-sm-12 d-flex justify-content-center">
-				  <a href="/lecturer/setting" type="button" class="waves-effect waves-light btn btn-secondary btn-rounded mb-5" style="margin-right:10px;"><i class="mdi mdi-account-edit"></i> Edit</a>
+				  {{-- <a href="/lecturer/setting" type="button" class="waves-effect waves-light btn btn-secondary btn-rounded mb-5" style="margin-right:10px;"><i class="mdi mdi-account-edit"></i> Edit</a> --}}
 				  <a href="{{ route('custom_logout') }}" type="button" class="waves-effect waves-light btn btn-secondary btn-rounded mb-5"
 				  onclick="event.preventDefault();
 				  document.getElementById('logout-form').submit();">

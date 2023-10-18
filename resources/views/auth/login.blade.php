@@ -40,11 +40,14 @@
 						<div class="bg-white rounded10 shadow-lg">
 							<div class="content-top-agile p-20 pb-0">
 								{{-- <h2 class="text-primary fw-600">Let's Get Started</h2> --}}
-								{{-- <div class="container mb-5">
+								<div class="container mb-5">
 									<img src="{{ asset('assets/images/logo/Kolej-UNITI.png')}}" height="60em" width="auto" >
-									<img src="{{ asset('assets/images/logo_ucms2.png')}}" height="30em" width="auto"  class="">
-								</div> --}}
-								<p class="mb-0 text-fade p-3 pb-0 ">Sign in to continue.test</p>							
+									{{-- <img src="{{ asset('assets/images/logo_ucms2.png')}}" height="30em" width="auto"  class=""> --}}
+									<h1>
+										<b><span style="color: orange;">UNITI</span> <span style="color: blue;">LINK</span></b>
+									</h1>									  
+								</div>
+								<p class="mb-0 text-fade p-3 pb-0 ">Sign in to continue.</p>							
 							</div>
 							@if(session()->has('message'))
 							<div class="container-fluid mt-2">
