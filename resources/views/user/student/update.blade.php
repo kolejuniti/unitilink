@@ -627,13 +627,13 @@ if(arr.includes(selectedValue))
 
   document.getElementById('commentID2').hidden = false;
   document.getElementById('comment').required = true;
-  document.getElementById('comment').disbled = false;
+  document.getElementById('comment').disabled = false;
 
 }else{
 
   document.getElementById('commentID2').hidden = true;
   document.getElementById('comment').required = false;
-  document.getElementById('comment').disbled = true;
+  document.getElementById('comment').disabled = true;
 
 }
 
