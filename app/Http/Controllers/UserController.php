@@ -604,9 +604,7 @@ class UserController extends Controller
         $data['student'] = DB::table('unitilink.students AS std')
                            ->join('eduhub.tblstudent_status as stdStatus', 'std.status', 'stdStatus.id')
                            ->join('eduhub.tblprogramme as prog', 'std.program', 'prog.id')
-                           ->join('eduhub.sessions AS t1', 'std.intake', 't1.SessionID')
-                           ->join('eduhub.sessions AS t2', 'std.session', 't2.SessionID')
-                           ->select('std.*', 'stdStatus.name AS status', 'prog.progname AS program', 'std.program AS progid', 't1.SessionName AS intake_name', 't2.SessionName AS session_name')
+                           ->select('std.*', 'stdStatus.name AS status', 'prog.progname AS program', 'std.program AS progid')
                            ->where('ic', request()->ic)->first();
 
         $data['spm'] = DB::table('tblstudent_spm')
