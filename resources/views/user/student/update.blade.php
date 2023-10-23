@@ -429,29 +429,106 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <label class="form-label" for="program">Program <p style="color:red; display:inline-block;">*</p></label>
-                            <select class="form-select" id="program" name="program" required>
+                            <label class="form-label" for="program">Program 1 <p style="color:red; display:inline-block;">*</p> ({{ ($data['program']->status_first == 0) ? 'processing' : (($data['program']->status_first == 1) ? 'approved' : 'rejected')}})</label>
+                            <select class="form-select" id="program" name="program[]" required>
                               <option value="-" selected disabled>-</option>
                                 @foreach ($program as $prg)
-                                <option value="{{ $prg->id }}" {{ ($prg->id == $student->program) ? 'selected' : ''}}>{{ $prg->progcode }} - {{$prg->progname }}</option> 
+                                <option value="{{ $prg->id }}" {{ ($prg->id == $data['program']->program_id_first) ? 'selected' : ''}}>{{ $prg->progcode }} - {{$prg->progname }}</option> 
                                 @endforeach
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-12 mt-3" id="commentID" hidden>
+                        @if(Auth::user()->type == 'admin')
+                        <div class="row">
                           <div class="form-group">
-                              <label class="form-label">Comment</label>
-                              <textarea id="commenttxt" name="comment" class="mt-2" rows="10" cols="80">
-                              </textarea>
-                              <span class="text-danger">@error('comment')
-                                {{ $message }}
-                              @enderror</span>
-                          </div>   
+                            <a class="btn btn-info btn-sm btn-sm mr-2" onclick="eligible('{{ $data['program']->id }}','1')">
+                              <i class="ti-pencil-alt">
+                              </i>
+                              Eligible
+                          </a>
+                          <a class="btn btn-danger btn-sm btn-sm mr-2" onclick="reject('{{ $data['program']->id }}','1')">
+                              <i class="ti-ruler-pencil">
+                              </i>
+                              Reject
+                          </a>
+                          </div>
                         </div>
+                        @endif
+                        @if($data['program']->status_first == 2)
+                        <div class="form-group">
+                          <textarea  name="comment" class="mt-2" rows="10" cols="80" readonly>{!! $data['program']->comment_first !!}
+                          </textarea>
+                        </div> 
+                        @endif
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="form-label" for="program">Program 2 <p style="color:red; display:inline-block;">*</p> ({{ ($data['program']->status_second == 0) ? 'processing' : (($data['program']->status_second == 1) ? 'approved' : 'rejected')}})</label>
+                            <select class="form-select" id="program" name="program[]" required>
+                              <option value="-" selected disabled>-</option>
+                                @foreach ($program as $prg)
+                                <option value="{{ $prg->id }}" {{ ($prg->id == $data['program']->program_id_second) ? 'selected' : ''}}>{{ $prg->progcode }} - {{$prg->progname }}</option> 
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        @if(Auth::user()->type == 'admin')
+                        <div class="row">
+                          <div class="form-group">
+                            <a class="btn btn-info btn-sm btn-sm mr-2" onclick="eligible('{{ $data['program']->id }}','2')">
+                              <i class="ti-pencil-alt">
+                              </i>
+                              Eligible
+                          </a>
+                          <a class="btn btn-danger btn-sm btn-sm mr-2" onclick="reject('{{ $data['program']->id }}','2')">
+                              <i class="ti-ruler-pencil">
+                              </i>
+                              Reject
+                          </a>
+                          </div>
+                        </div>
+                        @endif
+                        @if($data['program']->status_second == 2)
+                        <div class="form-group">
+                          <textarea  name="comment" class="mt-2" rows="10" cols="80" readonly>{!! $data['program']->comment_second !!}
+                          </textarea>
+                        </div> 
+                        @endif
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="form-label" for="program">Program 3 <p style="color:red; display:inline-block;">*</p> ({{ ($data['program']->status_third == 0) ? 'processing' : (($data['program']->status_third == 1) ? 'approved' : 'rejected')}})</label>
+                            <select class="form-select" id="program" name="program[]" required>
+                              <option value="-" selected disabled>-</option>
+                                @foreach ($program as $prg)
+                                <option value="{{ $prg->id }}" {{ ($prg->id == $data['program']->program_id_third) ? 'selected' : ''}}>{{ $prg->progcode }} - {{$prg->progname }}</option> 
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        @if(Auth::user()->type == 'admin')
+                        <div class="row">
+                          <div class="form-group">
+                            <a class="btn btn-info btn-sm btn-sm mr-2" onclick="eligible('{{ $data['program']->id }}','3')">
+                              <i class="ti-pencil-alt">
+                              </i>
+                              Eligible
+                          </a>
+                          <a class="btn btn-danger btn-sm btn-sm mr-2" onclick="reject('{{ $data['program']->id }}','3')">
+                              <i class="ti-ruler-pencil">
+                              </i>
+                              Reject
+                          </a>
+                          </div>
+                        </div>
+                        @endif
+                        @if($data['program']->status_third == 2)
+                        <div class="form-group">
+                          <textarea  name="comment" class="mt-2" rows="10" cols="80" readonly>{!! $data['program']->comment_third !!}
+                          </textarea>
+                        </div> 
+                        @endif
                       </div>
                     </div>
                   </div>
-                    
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -471,6 +548,15 @@
             <!-- /.card -->
           </div>
         </div>
+
+        <div id="uploadModal3" class="modal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+              <!-- modal content-->
+              <div class="modal-content" id="getModal">
+              </div>
+          </div>
+        </div>
+
       </div>
     </section>
     <!-- /.content -->
@@ -587,7 +673,7 @@ $(document).ready(function() {
 
 "use strict";
 ClassicEditor
-.create( document.querySelector( '#commenttxt' ),{ height: '25em' } )
+.create( document.querySelector( '#commenttxt2' ),{ height: '25em' } )
 .then(newEditor =>{editor = newEditor;})
 .catch( error => { console.log( error );});
 
@@ -607,13 +693,6 @@ $(document).on('change', "#CF",function(){
     //
 })
 
-$(document).on('change', '#program', function(){
-
-  document.getElementById('commentID').hidden = false;
-
-  document.getElementById('commenttxt').required = true;
-
-})
 
 $(document).on('change', '#qualification', function(){
 
@@ -638,5 +717,54 @@ if(arr.includes(selectedValue))
 }
 
 })
+
+function eligible(id,type)
+{
+
+    return $.ajax({
+        headers: {'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')},
+        url      : "{{ url('user/edit/eligible') }}",
+        method   : 'POST',
+        data 	 : {id: id, type: type},
+        error:function(err){
+            alert("Error");
+            console.log(err);
+        },
+        success  : function(data){
+            
+          window.location.reload();
+          alert("success");
+
+                
+        }
+    });
+
+}
+
+function reject(id,type)
+{
+  return $.ajax({
+          headers: {'X-CSRF-TOKEN':  $('meta[name="csrf-token"]').attr('content')},
+          url      : "{{ url('user/edit/rejected') }}",
+          method   : 'POST',
+          data 	 : {id: id, type: type},
+          error:function(err){
+              alert("Error");
+              console.log(err);
+          },
+          success  : function(data){
+              $('#getModal').html(data);
+
+              "use strict";
+              ClassicEditor
+              .create( document.querySelector( '#commenttxt' ),{ height: '25em' } )
+              .then(newEditor =>{editor = newEditor;})
+              .catch( error => { console.log( error );});
+              
+              $('#uploadModal3').modal('show');
+          }
+      });
+
+}
 </script>
 @endsection

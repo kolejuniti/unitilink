@@ -431,8 +431,30 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                            <label class="form-label" for="program">Program</label>
-                            <select class="form-select" id="program" name="program">
+                            <label class="form-label" for="program">Program 1 <p style="color:red; display:inline-block;">*</p></label>
+                            <select class="form-select" id="program" name="program[]" required>
+                              <option value="-" selected disabled>-</option>
+                              @foreach ($program as $prg)
+                                <option value="{{ $prg->id }}">{{ $prg->progcode }} - {{$prg->progname }}</option> 
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="form-label" for="program">Program 2 <p style="color:red; display:inline-block;">*</p></label>
+                            <select class="form-select" id="program" name="program[]" required>
+                              <option value="-" selected disabled>-</option>
+                              @foreach ($program as $prg)
+                                <option value="{{ $prg->id }}">{{ $prg->progcode }} - {{$prg->progname }}</option> 
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="form-label" for="program">Program 3 <p style="color:red; display:inline-block;">*</p></label>
+                            <select class="form-select" id="program" name="program[]" required>
                               <option value="-" selected disabled>-</option>
                               @foreach ($program as $prg)
                                 <option value="{{ $prg->id }}">{{ $prg->progcode }} - {{$prg->progname }}</option> 
