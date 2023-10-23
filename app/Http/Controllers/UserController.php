@@ -56,12 +56,11 @@ class UserController extends Controller
     public function getStudentTableIndex(Request $request)
     {
         $student = DB::table('unitilink.students')
-        ->join('eduhub.tblprogramme', 'unitilink.students.program', '=', 'eduhub.tblprogramme.id')
         ->join('eduhub.tblstudent_status', 'unitilink.students.status', '=', 'eduhub.tblstudent_status.id')
         ->join('unitilink.tblstudent_personal', 'unitilink.students.ic', '=', 'unitilink.tblstudent_personal.student_ic')
         ->join('eduhub.tblsex', 'unitilink.tblstudent_personal.sex_id', '=', 'eduhub.tblsex.id')
         ->join('unitilink.users', 'unitilink.students.stafID_add', '=', 'unitilink.users.id')
-        ->select('unitilink.students.*', 'eduhub.tblprogramme.progname', 'eduhub.tblstudent_status.name AS status',
+        ->select('unitilink.students.*', 'eduhub.tblstudent_status.name AS status',
                  'unitilink.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender');
     
 
@@ -96,9 +95,6 @@ class UserController extends Controller
                                 No. Matric
                             </th>
                             <th>
-                                Program
-                            </th>
-                            <th>
                                 Status
                             </th>
                             <th>
@@ -128,9 +124,6 @@ class UserController extends Controller
                 </td>
                 <td>
                 '. $student->no_matric .'
-                </td>
-                <td>
-                '. $student->progname .'
                 </td>
                 <td>
                 '. $student->status .'
@@ -187,12 +180,11 @@ class UserController extends Controller
     public function getStudentTableIndex2(Request $request)
     {
         $students = DB::table('unitilink.students')
-            ->join('eduhub.tblprogramme', 'unitilink.students.program', 'eduhub.tblprogramme.id')
             ->join('eduhub.tblstudent_status', 'unitilink.students.status', 'eduhub.tblstudent_status.id')
             ->join('unitilink.tblstudent_personal', 'unitilink.students.ic', 'unitilink.tblstudent_personal.student_ic')
             ->join('eduhub.tblsex', 'unitilink.tblstudent_personal.sex_id', 'eduhub.tblsex.id')
             ->join('unitilink.users', 'unitilink.students.stafID_add', '=', 'unitilink.users.id')
-            ->select('unitilink.students.*', 'eduhub.tblprogramme.progname', 
+            ->select('unitilink.students.*',
                      'eduhub.tblstudent_status.name AS status',
                      'unitilink.tblstudent_personal.no_tel', 'eduhub.tblsex.sex_name AS gender')
             ->where('unitilink.students.name', 'LIKE', "%".$request->search."%")
@@ -216,9 +208,6 @@ class UserController extends Controller
                                 No. Matric
                             </th>
                             <th>
-                                Program
-                            </th>
-                            <th>
                             </th>
                         </tr>
                     </thead>
@@ -239,9 +228,6 @@ class UserController extends Controller
                 </td>
                 <td>
                 '. $student->no_matric .'
-                </td>
-                <td>
-                '. $student->progname .'
                 </td>';
                 
 
@@ -396,7 +382,6 @@ class UserController extends Controller
                 'no_matric' => null,
                 'email' =>$request->email,
                 'semester' => 1,
-                'program' => $data['program'],
                 'password' => Hash::make('12345678'),
                 'status' => 1,
                 'campus_id' => 0,
@@ -439,6 +424,16 @@ class UserController extends Controller
                 'country_id' => $request->country
             ]);
 
+            DB::table('tblstudent_program')->insert([
+                'student_ic' => $data['id'],
+                'program_id_first' => $request->program[0],
+                'status_first' => 0,
+                'program_id_second' => $request->program[1],
+                'status_second' => 0,
+                'program_id_third' => $request->program[2],
+                'status_third' => 0,
+            ]);
+
         }
 
         return redirect(route('user.create'))->with('newStud', $data['id']);
@@ -455,6 +450,8 @@ class UserController extends Controller
                    ->where('ic',request()->ic)->first();
 
         $data['waris'] = DB::table('tblstudent_waris')->where('student_ic', $student->ic)->get();
+
+        $data['program'] = DB::table('tblstudent_program')->where('student_ic', $student->ic)->first();
 
         //dd($data['waris']);
 
@@ -514,22 +511,22 @@ class UserController extends Controller
 
         }
 
-        $oldstd = DB::table('students')->where('ic', $data['id'])->first();
+        // $oldstd = DB::table('students')->where('ic', $data['id'])->first();
 
-        if($oldstd->program != $data['program'])
-        {
+        // if($oldstd->program != $data['program'])
+        // {
 
-            DB::table('student_program')->insert([
-                'student_ic' => $oldstd->ic,
-                'program_id' => $oldstd->program,
-                'comment' => $request->comment
-            ]);
+        //     DB::table('student_program')->insert([
+        //         'student_ic' => $oldstd->ic,
+        //         'program_id' => $oldstd->program,
+        //         'comment' => $request->comment
+        //     ]);
 
-            DB::table('students')->where('ic', $data['id'])->update([
-                'status' => 1
-            ]);
+        //     DB::table('students')->where('ic', $data['id'])->update([
+        //         'status' => 1
+        //     ]);
 
-        }
+        // }
 
         DB::table('students')->where('ic', $data['id'])->update([
             'name' => $data['name'],
@@ -569,6 +566,12 @@ class UserController extends Controller
             'country_id' => $request->country
             ]
         );
+
+        DB::table('tblstudent_program')->where('student_ic', $data['id'])->update([
+            'program_id_first' => $request->program[0],
+            'program_id_second' => $request->program[1],
+            'program_id_third' => $request->program[2],
+        ]);
 
         DB::table('tblstudent_waris')->where('student_ic', $data['id'])->delete();
 
@@ -665,6 +668,79 @@ class UserController extends Controller
 
             return back()->with('success', 'Successfully saved SPM data')->withInput();
         }
+
+    }
+
+    public function eligibleUser(Request $request)
+    {
+        if($request->type == 1)
+        {
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_first' => 1
+            ]);
+
+        }elseif($request->type == 2){
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_second' => 1
+            ]);
+
+        }elseif($request->type == 3){
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_third' => 1
+            ]);
+
+        }
+
+        return true;
+
+    }
+
+    public function rejectedUser(Request $request)
+    {
+
+        $data['id'] = $request->id;
+
+        $data['type'] = $request->type;
+
+        return view('user.student.getRejected', compact('data'));
+
+    }
+
+    public function submitRejectedUser(Request $request)
+    {
+
+        $data = $request->validate([
+            'comment' => ['required','string'],
+        ]);
+
+        if($request->type == 1)
+        {
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_first' => 2,
+                'comment_first' => $data['comment']
+            ]);
+
+        }elseif($request->type == 2){
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_second' => 2,
+                'comment_second' => $data['comment']
+            ]);
+
+        }elseif($request->type == 3){
+
+            DB::table('tblstudent_program')->where('id', $request->id)->update([
+                'status_third' => 2,
+                'comment_third' => $data['comment']
+            ]);
+
+        }
+
+        return back();
 
     }
 }
