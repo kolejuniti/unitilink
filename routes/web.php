@@ -36,6 +36,9 @@ Route::get('/user/edit', [App\Http\Controllers\UserController::class, 'editUser'
 Route::post('/user/edit/getStudentTableIndex2', [App\Http\Controllers\UserController::class, 'getStudentTableIndex2']);
 Route::get('/user/edit/{ic}', [App\Http\Controllers\UserController::class, 'editForm'])->name('user.editForm');
 Route::post('/user/edit/update', [App\Http\Controllers\UserController::class, 'updateUser'])->name('user.update');
+Route::post('/user/edit/eligible', [App\Http\Controllers\UserController::class, 'eligibleUser'])->name('user.eligible');
+Route::post('/user/edit/rejected', [App\Http\Controllers\UserController::class, 'rejectedUser'])->name('user.rejected');
+Route::post('/user/edit/rejected/submit', [App\Http\Controllers\UserController::class, 'submitRejectedUser'])->name('user.rejected.submit');
 Route::get('/user/create', [App\Http\Controllers\UserController::class, 'createUser'])->name('user.create');
 Route::post('/user/create/search', [App\Http\Controllers\UserController::class, 'createSearch'])->name('user.create.search');
 Route::post('/user/store', [App\Http\Controllers\UserController::class, 'storeUser'])->name('user.storeStudent');
